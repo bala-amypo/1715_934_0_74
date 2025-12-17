@@ -1,58 +1,63 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.List;
+import java.util.Optional;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-// import com.example.demo.entity.Student;
-// import com.example.demo.service.StudentService;
+import com.example.demo.entity.Student;
+import com.example.demo.service.StudentService;
 
-// @RestController
-// @CrossOrigin(origins = "*")
-// public class StudentController {
+@CrossOrigin(origins = "*")
+@RestController
+public class StudentController {
 
-//     @Autowired
-//     private StudentService studentService;
+    @Autowired
+    StudentService studentService;
 
-//     @PostMapping("/postStudent")
-//     public Student postStd(@RequestBody Student st) {
-//         return studentService.insertStudent(st);
-//     }
+    @PostMapping("/postStudent")
+    public Student insertStudentService(@RequestBody Student st) {
+        return studentService.insertStudent(st);
+    }
 
-//     @GetMapping("/getAll")
-//     public List<Student> getAll() {
-//         return studentService.getAllStudents();
-//     }
+    @GetMapping("/getAll")
+    public List<Student> getAll() {
+        return studentService.getAllStudents();
+    }
 
-//     @GetMapping("/get/{id}")
-//     public Optional<Student> get(@PathVariable Long id) {
-//         return studentService.getOneStudent(id);
-//     }
+    @GetMapping("/get/{id}")
+    public Optional<Student> get(@PathVariable Long id) {
+        return studentService.getOneStudent(id);
+    }
 
-//     @PutMapping("/update/{id}")
-//     public String update(@PathVariable Long id, @RequestBody Student newStudent) {
+    @PutMapping("/update/{id}")
+    public String update(@PathVariable Long id, @RequestBody Student newStudent) {
+        Optional<Student> student = studentService.getOneStudent(id);
 
-//         Optional<Student> student = studentService.getOneStudent(id);
+        if (student.isPresent()) {
+            newStudent.setId(id);
+            studentService.insertStudent(newStudent);
+            return "Updated Success";
+        }
+        return "Id not found";
+    }
 
-//         if (student.isPresent()) {
-//             newStudent.setId(id);
-//             studentService.insertStudent(newStudent);
-//             return "Updated Success";
-//         }
-//         return "Id not found";
-//     }
+    @DeleteMapping("/del/{id}")
+    public String deleteStudent(@PathVariable Long id) {
+        Optional<Student> student = studentService.getOneStudent(id);
 
-//     @DeleteMapping("/del/{id}")
-//     public String deleteStudent(@PathVariable Long id) {
-
-//         Optional<Student> student = studentService.getOneStudent(id);
-
-//         if (student.isPresent()) {
-//             studentService.deleteStudent(id);
-//             return "Deleted Success";
-//         }
-//         return "Id Not Found";
-//     }
-// }
+        if (student.isPresent()) {
+            studentService.deleteStudent(id);
+            return "Deleted Success";
+        }
+        return "Id Not Found";
+    }
+}
