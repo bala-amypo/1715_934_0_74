@@ -12,5 +12,6 @@ public StudentService implements StudentService(){
     StudentRepo st;
     @Override
     
+
+public student insertStudent(student st)
 }
-public student insertStudent(student)
