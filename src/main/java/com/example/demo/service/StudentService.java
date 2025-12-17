@@ -1,17 +1,13 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.example.demo.entity.Student;
-import com.example.demo.repository.StudentRepo;
-import com.example.demo.service.StudentService;
-@Service
-public StudentService implements StudentService(){
-    @Autowired
-    StudentRepo st;
-    @Override
-    
 
-public student insertStudent(student st)
+import com.example.demo.entity.Student;
+
+public interface StudentService {
+    Student insertStudent(Student st);
+    List<Student> getAllStudents();
+    Optional<Student> getOneStudent(Long id);
+    void deleteStudent(Long id);
 }
